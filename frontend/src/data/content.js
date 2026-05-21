@@ -268,7 +268,7 @@ export const TRUSTEES = [
     ],
   },
   {
-    name: "Mrs. Eucharia Nganya",
+    name: "Lady Eucharia Nganya",
     role: "Director",
     photo: MEDIA.team.eucharia,
     bio: "Retired educationist and humanitarian. Former Chief Supervisor of Schools with the State Primary Education Board, Owerri. A passionate servant of vulnerable communities.",
