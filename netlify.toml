@@ -3,6 +3,26 @@
   command = "npm run build"
   publish = "build"
 
+[build.environment]
+  # Used for canonical and og:url. Set REACT_APP_API_URL in the Netlify UI
+  # (Site settings > Environment variables) so the API domain isn't committed.
+  # Both are baked in at build time, so changing either needs a redeploy.
+  REACT_APP_SITE_URL = "https://www.caresupportfortheneedy.com"
+
+# Self-hosted images are content-stable and renamed when they change,
+# so they can be cached hard.
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# The admin area must never be indexed. The <meta name="robots"> tag covers
+# rendered pages; this covers the response itself.
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
 # This ensures React Router handles all URLs without 404 errors
 [[redirects]]
   from = "/*"
