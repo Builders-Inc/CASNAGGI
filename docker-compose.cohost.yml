@@ -1,0 +1,42 @@
+# Co-hosting variant: run the API on a host whose ports 80/443 are already
+# owned by another stack's reverse proxy.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.cohost.yml up -d
+#
+# Differences from the standalone deployment:
+#   - This project's Caddy never starts, so nothing competes for 80/443. TLS is
+#     terminated by the host's existing proxy, which routes the API's hostname
+#     to the `casnaggi-api` alias on the shared edge network.
+#   - The API joins that external network in addition to its own, so the
+#     existing proxy can reach it by name. Mongo stays off it and remains
+#     reachable only from the API.
+#   - Mongo's cache is capped. WiredTiger otherwise claims about half of
+#     (RAM - 1GB), which on a shared 4GB box would starve whatever else is
+#     running.
+#
+# Set EDGE_NETWORK to the existing proxy's docker network, e.g.
+# EDGE_NETWORK=npprm-deploy_edge in the root .env.
+
+services:
+  api:
+    networks:
+      default: {}
+      edge:
+        aliases:
+          - casnaggi-api
+
+  mongo:
+    # ~256MB ceiling. Ample for this workload: tens of events and a contact
+    # inbox, with indexes on slug, date and createdAt.
+    command: ["--wiredTigerCacheSizeGB", "0.25"]
+
+  caddy:
+    # Not started. A profile no one activates is the supported way to keep a
+    # service defined but dormant, so the standalone file stays unmodified.
+    profiles:
+      - standalone-only
+
+networks:
+  edge:
+    external: true
+    name: ${EDGE_NETWORK}

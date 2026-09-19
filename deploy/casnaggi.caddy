@@ -1,0 +1,23 @@
+# Vhost for the CASNAGGI API when co-hosted behind another stack's Caddy.
+#
+# Append this block to the host proxy's Caddyfile, or drop the file into a
+# directory that Caddyfile imports (many setups end with something like
+# `import /etc/caddy/extra/*.caddy`). Then validate and reload rather than
+# restart, so the other sites on that proxy stay up:
+#
+#   docker exec <proxy> caddy validate --config /etc/caddy/Caddyfile
+#   docker exec <proxy> caddy reload   --config /etc/caddy/Caddyfile
+#
+# `casnaggi-api` is the network alias set in docker-compose.cohost.yml; the
+# proxy resolves it over the shared edge network.
+
+api.casnaggi.org {
+	header Strict-Transport-Security "max-age=31536000; includeSubDomains"
+	header -Server
+
+	# The API is the only thing on this hostname, and CORS is enforced by the
+	# application from CORS_ORIGINS.
+	reverse_proxy casnaggi-api:8000 {
+		header_up X-Request-ID {http.request.uuid}
+	}
+}
