@@ -95,19 +95,33 @@ const Footer = () => {
               </li>
               <li className="flex items-start gap-3">
                 <Phone className="h-4 w-4 mt-1 text-brand-terracotta" />
-                <a href={`tel:${ORG.phone}`} className="hover:text-white" data-testid="footer-phone">
-                  {ORG.phone}
-                </a>
+                <span className="flex flex-col gap-1">
+                  {ORG.phones.map((p) => (
+                    <a
+                      key={p.tel}
+                      href={`tel:${p.tel}`}
+                      className="hover:text-white"
+                      data-testid={`footer-phone-${p.label.toLowerCase()}`}
+                    >
+                      {p.display}
+                    </a>
+                  ))}
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="h-4 w-4 mt-1 text-brand-terracotta" />
-                <a
-                  href={`mailto:${ORG.email}`}
-                  className="hover:text-white break-all"
-                  data-testid="footer-email"
-                >
-                  {ORG.email}
-                </a>
+                <span className="flex flex-col gap-1">
+                  {ORG.emails.map((e) => (
+                    <a
+                      key={e.address}
+                      href={`mailto:${e.address}`}
+                      className="hover:text-white break-all"
+                      data-testid={`footer-email-${e.label.toLowerCase().replace(/\s+/g, "-")}`}
+                    >
+                      {e.address}
+                    </a>
+                  ))}
+                </span>
               </li>
               <li className="flex items-start gap-3">
                 <ArrowUpRight className="h-4 w-4 mt-1 text-brand-terracotta" />

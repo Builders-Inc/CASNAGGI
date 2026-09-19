@@ -8,9 +8,29 @@ export const ORG = {
   registrar: "Corporate Affairs Commission (CAC)",
   address: "49 Customs Road, Bayelsa State, Nigeria",
   branches: "Suit 1B First Floor Bowl Jolly Nyame Stadium Yola Road Jalingo, Taraba State",
-  phone: "+234 916 796 1355 | +234 813 741 5326",
-  email: "casnaggi@gmail.com | makeawish@caresupportfortheneedy.com",
-  website: "www.caresupportfortheneedy.com",
+  // Structured rather than pipe-joined strings: the previous single-string form
+  // was interpolated straight into tel: and mailto: hrefs, which produced a
+  // malformed URI everywhere it was used. `whatsapp` is digits-only E.164
+  // because wa.me silently fails on a leading + or any spaces.
+  phones: [
+    {
+      label: "Primary",
+      display: "+234 916 796 1355",
+      tel: "+2349167961355",
+      whatsapp: "2349167961355",
+    },
+    {
+      label: "Secondary",
+      display: "+234 813 741 5326",
+      tel: "+2348137415326",
+      whatsapp: "2348137415326",
+    },
+  ],
+  emails: [
+    { label: "General", address: "casnaggi@gmail.com" },
+    { label: "Make a Wish", address: "makeawish@caresupportfortheneedy.com" },
+  ],
+  website: "casnaggi.org",
   socials: [
     { label: "Facebook", href: "https://web.facebook.com/casnaggi" },
     { label: "Twitter", href: "https://twitter.com/casnaggi" },
@@ -19,20 +39,24 @@ export const ORG = {
   ],
 };
 
-export const LOGO_URL =
-  "https://caresupportfortheneedy.com/wp-content/uploads/2025/12/Cradling-Love-in-Soft-Colors.png";
+// Canonical "primary" accessors, so call sites don't repeat [0] everywhere.
+ORG.primaryPhone = ORG.phones[0];
+ORG.primaryEmail = ORG.emails[0];
+ORG.whatsappHref = `https://wa.me/${ORG.primaryPhone.whatsapp}?text=${encodeURIComponent(
+  "Hello CASNAGGI, I'd like to ask about "
+)}`;
+
+// Self-hosted from frontend/public/images, served by Netlify's CDN alongside
+// the site. Previously these hotlinked the old WordPress install, which made
+// the redesigned site depend on the old one staying online. Re-encoded as
+// WebP at display size: 11.7 MB of source PNG/JPEG became 789 KB.
+export const LOGO_URL = "/images/logo.webp";
 
 export const MEDIA = {
-  placeholder: "https://caresupportfortheneedy.com/wp-content/uploads/2026/04/placeholder.png",
   heroHome:
     "https://images.pexels.com/photos/28702872/pexels-photo-28702872.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=900&w=1400",
-  unveiling:
-    "https://caresupportfortheneedy.com/wp-content/uploads/2026/01/iv-edited.png",
-  programHero:
-    "https://caresupportfortheneedy.com/wp-content/uploads/2025/07/program.jpg",
-  thumb: "https://caresupportfortheneedy.com/wp-content/uploads/2025/07/thumb-1.jpg",
-  humanitarian:
-    "https://caresupportfortheneedy.com/wp-content/uploads/2026/02/IMG-20260116-WA0076.jpg.jpeg",
+  unveiling: "/images/unveiling.webp",
+  humanitarian: "/images/humanitarian.webp",
   youth:
     "https://images.unsplash.com/photo-1649486116205-71c92cf5160f?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=85&w=1400",
   women:
@@ -53,31 +77,20 @@ export const MEDIA = {
     "https://images.pexels.com/photos/6646868/pexels-photo-6646868.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=900&w=1400",
   workshop:
     "https://images.pexels.com/photos/8761744/pexels-photo-8761744.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=900&w=1400",
-  food:
-    "https://caresupportfortheneedy.com/wp-content/uploads/2026/02/IMG-20260116-WA0171.jpg.jpeg",
+  food: "/images/food.webp",
   team: {
-    ifeoma:
-      "https://caresupportfortheneedy.com/wp-content/uploads/2025/12/WhatsApp-Image-2025-12-11-at-22.21.27_27d8e097-e1765561153698.jpg",
-    eucharia:
-      "https://caresupportfortheneedy.com/wp-content/uploads/2025/12/Lady-Nganya-300x300.jpg",
-    chima:
-      "https://caresupportfortheneedy.com/wp-content/uploads/2026/04/Dr.-Chima.png",
-    mbara:
-      "https://caresupportfortheneedy.com/wp-content/uploads/2026/04/Rev-214x300.png",
-    blessing:
-      "https://caresupportfortheneedy.com/wp-content/uploads/2026/04/CEO.png",
-    favour:
-      "https://caresupportfortheneedy.com/wp-content/uploads/2025/12/Favour-300x300.jpg",
-    bagudu:
-      "https://caresupportfortheneedy.com/wp-content/uploads/2026/02/IMG-20260116-WA0096.jpg.jpeg",
+    ifeoma: "/images/team-ifeoma.webp",
+    eucharia: "/images/team-eucharia.webp",
+    chima: "/images/team-chima.webp",
+    mbara: "/images/team-mbara.webp",
+    blessing: "/images/team-blessing.webp",
+    favour: "/images/team-favour.webp",
+    bagudu: "/images/team-bagudu.webp",
   },
   programImages: {
-    humanitarian:
-      "https://caresupportfortheneedy.com/wp-content/uploads/2025/12/Gemini_Generated_Image_sv41jvsv41jvsv41-600x400.png",
-    youth:
-      "https://caresupportfortheneedy.com/wp-content/uploads/2025/12/Gemini_Generated_Image_1q0jtr1q0jtr1q0j-1-600x400.png",
-    women:
-      "https://caresupportfortheneedy.com/wp-content/uploads/2025/12/Gemini_Generated_Image_o5e7f5o5e7f5o5e7-600x400.png",
+    humanitarian: "/images/program-humanitarian.webp",
+    youth: "/images/program-youth.webp",
+    women: "/images/program-women.webp",
   },
 };
 

@@ -132,20 +132,20 @@ const Donate = () => {
               </p>
               <div className="mt-6 space-y-3">
                 <a
-                  href={`mailto:${ORG.email}`}
+                  href={`mailto:${ORG.primaryEmail.address}`}
                   className="flex items-center gap-3 text-brand-ink hover:text-brand-terracotta transition"
                   data-testid="donate-email"
                 >
                   <Mail className="h-4 w-4" />
-                  {ORG.email}
+                  {ORG.primaryEmail.address}
                 </a>
                 <a
-                  href={`tel:${ORG.phone}`}
+                  href={`tel:${ORG.primaryPhone.tel}`}
                   className="flex items-center gap-3 text-brand-ink hover:text-brand-terracotta transition"
                   data-testid="donate-phone"
                 >
                   <Phone className="h-4 w-4" />
-                  {ORG.phone}
+                  {ORG.primaryPhone.display}
                 </a>
               </div>
               <div className="mt-8 flex flex-wrap gap-4">
@@ -154,7 +154,7 @@ const Donate = () => {
                 </Link>
                 <button
                   type="button"
-                  onClick={() => navigator.clipboard?.writeText(ORG.email)}
+                  onClick={() => navigator.clipboard?.writeText(ORG.primaryEmail.address)}
                   className="btn-outline"
                   data-testid="donate-copy-email"
                 >
