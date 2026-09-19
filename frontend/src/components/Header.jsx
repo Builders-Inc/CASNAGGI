@@ -29,20 +29,20 @@ const Header = () => {
         <div className="container-x flex items-center justify-between py-2.5">
           <div className="flex items-center gap-6">
             <a
-              href={`tel:${ORG.phone}`}
+              href={`tel:${ORG.primaryPhone.tel}`}
               className="flex items-center gap-2 hover:text-white transition"
               data-testid="utility-phone"
             >
               <Phone className="h-3.5 w-3.5" />
-              {ORG.phone}
+              {ORG.primaryPhone.display}
             </a>
             <a
-              href={`mailto:${ORG.email}`}
+              href={`mailto:${ORG.primaryEmail.address}`}
               className="flex items-center gap-2 hover:text-white transition"
               data-testid="utility-email"
             >
               <Mail className="h-3.5 w-3.5" />
-              {ORG.email}
+              {ORG.primaryEmail.address}
             </a>
           </div>
           <div className="tracking-[0.22em] uppercase text-[10px] text-white/60">

@@ -2,7 +2,14 @@ import React from "react";
 import { Helmet } from "react-helmet-async";
 
 const SITE_NAME = "CASNAGGI — Care Support for the Needy & Good Governance Initiative";
-const SITE_BASE = ""; // TODO: Set to your production domain
+
+// Canonical and og:url must be absolute; a bare path is invalid and stops
+// social unfurls resolving at all. Override per environment with
+// REACT_APP_SITE_URL (set it in netlify.toml or the Netlify UI).
+const SITE_BASE = (
+  process.env.REACT_APP_SITE_URL || "https://www.caresupportfortheneedy.com"
+).replace(/\/$/, "");
+
 const DEFAULT_OG_IMAGE =
   "https://images.pexels.com/photos/28702872/pexels-photo-28702872.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=900&w=1400";
 
@@ -13,6 +20,7 @@ const Seo = ({
   image = DEFAULT_OG_IMAGE,
   type = "website",
   keywords = "CASNAGGI, Nigerian NGO, humanitarian, good governance, Bayelsa, civic education, women empowerment, youth empowerment, charity Nigeria",
+  noindex = false,
 }) => {
   const fullTitle = title ? `${title} · CASNAGGI` : SITE_NAME;
   const url = `${SITE_BASE}${path}`;
@@ -43,7 +51,10 @@ const Seo = ({
 
       {/* Misc */}
       <meta name="theme-color" content="#E05A47" />
-      <meta name="robots" content="index, follow" />
+      <meta
+        name="robots"
+        content={noindex ? "noindex, nofollow" : "index, follow"}
+      />
     </Helmet>
   );
 };

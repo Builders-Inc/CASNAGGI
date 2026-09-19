@@ -8,8 +8,28 @@ export const ORG = {
   registrar: "Corporate Affairs Commission (CAC)",
   address: "49 Customs Road, Bayelsa State, Nigeria",
   branches: "Suit 1B First Floor Bowl Jolly Nyame Stadium Yola Road Jalingo, Taraba State",
-  phone: "+234 916 796 1355 | +234 813 741 5326",
-  email: "casnaggi@gmail.com | makeawish@caresupportfortheneedy.com",
+  // Structured rather than pipe-joined strings: the previous single-string form
+  // was interpolated straight into tel: and mailto: hrefs, which produced a
+  // malformed URI everywhere it was used. `whatsapp` is digits-only E.164
+  // because wa.me silently fails on a leading + or any spaces.
+  phones: [
+    {
+      label: "Primary",
+      display: "+234 916 796 1355",
+      tel: "+2349167961355",
+      whatsapp: "2349167961355",
+    },
+    {
+      label: "Secondary",
+      display: "+234 813 741 5326",
+      tel: "+2348137415326",
+      whatsapp: "2348137415326",
+    },
+  ],
+  emails: [
+    { label: "General", address: "casnaggi@gmail.com" },
+    { label: "Make a Wish", address: "makeawish@caresupportfortheneedy.com" },
+  ],
   website: "www.caresupportfortheneedy.com",
   socials: [
     { label: "Facebook", href: "https://web.facebook.com/casnaggi" },
@@ -18,6 +38,13 @@ export const ORG = {
     { label: "Youtube", href: "https://youtube.com/casnaggi" },
   ],
 };
+
+// Canonical "primary" accessors, so call sites don't repeat [0] everywhere.
+ORG.primaryPhone = ORG.phones[0];
+ORG.primaryEmail = ORG.emails[0];
+ORG.whatsappHref = `https://wa.me/${ORG.primaryPhone.whatsapp}?text=${encodeURIComponent(
+  "Hello CASNAGGI, I'd like to ask about "
+)}`;
 
 export const LOGO_URL =
   "https://caresupportfortheneedy.com/wp-content/uploads/2025/12/Cradling-Love-in-Soft-Colors.png";
