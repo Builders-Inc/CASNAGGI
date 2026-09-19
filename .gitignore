@@ -88,3 +88,7 @@ credentials.json
 *.pem
 *.key
 .credentials
+
+# Secrets
+.env
+!.env.example

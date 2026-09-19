@@ -1,72 +1,59 @@
-# Deployment Guide for Namecheap Shared Hosting (cPanel)
+# Deployment
 
-This guide walks you through deploying the FastAPI backend and React frontend to your Namecheap Shared Hosting account.
+- **Frontend:** static React build hosted on Netlify (config in `netlify.toml`).
+- **Backend:** FastAPI + MongoDB on a VPS, run with Docker Compose. Caddy terminates HTTPS automatically.
 
-## Prerequisites
-1. Access to your Namecheap cPanel.
-2. The domain name is pointed to this hosting account.
-3. MongoDB cluster URL (e.g., MongoDB Atlas) for the backend.
+## 1. Backend on the VPS
 
----
+Prerequisites: a Linux VPS with Docker + the Compose plugin, ports 80/443 open, and a DNS **A record** (e.g. `api.yourdomain.com`) pointing at the VPS IP.
 
-## Part 1: Deploying the Backend (FastAPI)
+```bash
+git clone <repo-url> casnaggi && cd casnaggi
 
-1. **Upload Backend Files:**
-   - In cPanel, open **File Manager**.
-   - Create a folder outside of `public_html` (e.g., `api_backend`).
-   - Upload the entire `backend` folder contents into `api_backend`.
+cp .env.example .env                  # set API_DOMAIN=api.yourdomain.com
+cp backend/.env.example backend/.env  # set CORS_ORIGINS to your Netlify/custom domain
 
-2. **Create a Python App:**
-   - In cPanel, find the **Software** section and click on **Setup Python App**.
-   - Click **Create Application**.
-   - **Python version:** Select the highest 3.x version available (preferably 3.10 or higher).
-   - **Application root:** Enter the folder name you created (e.g., `api_backend`).
-   - **Application URL:** This is the URL where your API will be hosted (e.g., `yourdomain.com/api` or a subdomain like `api.yourdomain.com`).
-   - **Application startup file:** `passenger_wsgi.py`
-   - **Application Entry point:** `application`
-   - Click **Create**.
+docker compose up -d --build
+```
 
-3. **Install Dependencies:**
-   - On the same "Setup Python App" page, scroll down to the **Configuration files** section.
-   - Enter `requirements.txt` and click **Add**.
-   - Click **Run Pip Install** and select `requirements.txt` from the dropdown. Wait for it to finish.
-   
-4. **Environment Variables:**
-   - Scroll down to **Environment variables**.
-   - Add your environment variables:
-     - `MONGO_URL`: Your MongoDB connection string.
-     - `DB_NAME`: Your database name.
-     - `CORS_ORIGINS`: Your frontend domain (e.g., `https://yourdomain.com`).
-   - **Important:** Click **Save** at the top, then **Restart** the application.
+Verify: `curl https://api.yourdomain.com/api/` should return `{"message":"Hello World"}`.
 
----
+`backend/.env`:
 
-## Part 2: Deploying the Frontend (React)
+| Variable | Purpose |
+| --- | --- |
+| `MONGO_URL` | `mongodb://mongo:27017` for the bundled container, or an Atlas URL |
+| `DB_NAME` | Database name |
+| `CORS_ORIGINS` | Comma-separated frontend origins, e.g. `https://casnaggi.netlify.app,https://www.yourdomain.com` |
 
-1. **Build the Application:**
-   - On your local computer, navigate to the `frontend` directory.
-   - Create a `.env.production` file (or just `.env`) with your API URL:
-     ```env
-     REACT_APP_API_URL=https://yourdomain.com/api
-     ```
-   - Run the build command:
-     ```bash
-     yarn build
-     ```
-     *(or `npm run build`)*
-   - This creates a `build` directory containing the optimized static files.
+MongoDB is not exposed to the internet; only Caddy publishes ports.
 
-2. **Upload Frontend Files:**
-   - In cPanel, open **File Manager**.
-   - Navigate to the `public_html` directory.
-   - Delete the default Namecheap `index.php` or `default.html` if it exists.
-   - Upload the **contents** of your local `frontend/build` folder (including the `index.html`, `static` folder, etc.) into `public_html`.
-   - Also, upload the `.htaccess` file from `frontend/public/.htaccess` to `public_html` to enable client-side routing. *(Note: you may need to enable "Show Hidden Files" in File Manager settings to see `.htaccess`)*.
+### Updating
 
----
+```bash
+git pull && docker compose up -d --build
+```
+
+Logs: `docker compose logs -f api`
+
+### Backups
+
+```bash
+docker compose exec mongo mongodump --archive --db casnaggi > casnaggi-$(date +%F).archive
+```
+
+## 2. Frontend on Netlify
+
+In Netlify → Site settings → Environment variables, set:
+
+```
+REACT_APP_API_URL=https://api.yourdomain.com/api
+```
+
+Then trigger a redeploy (the value is baked in at build time).
 
 ## Troubleshooting
 
-- **500 Internal Server Error on API:** Check the Passenger logs in cPanel (usually in `stderr.log` or by enabling `PassengerAppEnv development` via `.htaccess`). Ensure the MongoDB URL is correct and IP whitelist in MongoDB Atlas allows Namecheap IPs.
-- **404 Errors on Frontend Reload:** Ensure the `.htaccess` file was successfully uploaded to `public_html`.
-- **API CORS Errors:** Make sure `CORS_ORIGINS` in your Python app matches the exact URL of your frontend (e.g., `https://yourdomain.com`).
+- **CORS errors:** `CORS_ORIGINS` must exactly match the browser origin (scheme + host, no trailing slash). Restart with `docker compose up -d` after editing.
+- **No HTTPS certificate:** confirm the DNS record has propagated and ports 80/443 are open in the VPS firewall.
+- **API can't reach Mongo:** check `docker compose ps` and that `MONGO_URL` uses the `mongo` hostname.
