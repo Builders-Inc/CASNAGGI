@@ -7,7 +7,7 @@ const SITE_NAME = "CASNAGGI — Care Support for the Needy & Good Governance Ini
 // social unfurls resolving at all. Override per environment with
 // REACT_APP_SITE_URL (set it in netlify.toml or the Netlify UI).
 const SITE_BASE = (
-  process.env.REACT_APP_SITE_URL || "https://www.caresupportfortheneedy.com"
+  process.env.REACT_APP_SITE_URL || "https://casnaggi.org"
 ).replace(/\/$/, "");
 
 const DEFAULT_OG_IMAGE =

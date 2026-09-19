@@ -7,7 +7,9 @@
   # Used for canonical and og:url. Set REACT_APP_API_URL in the Netlify UI
   # (Site settings > Environment variables) so the API domain isn't committed.
   # Both are baked in at build time, so changing either needs a redeploy.
-  REACT_APP_SITE_URL = "https://www.caresupportfortheneedy.com"
+  # Must match the host actually served (apex vs www), or every canonical
+  # URL points somewhere the site doesn't answer.
+  REACT_APP_SITE_URL = "https://casnaggi.org"
 
 # Self-hosted images are content-stable and renamed when they change,
 # so they can be cached hard.

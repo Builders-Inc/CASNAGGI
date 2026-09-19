@@ -30,7 +30,7 @@ export const ORG = {
     { label: "General", address: "casnaggi@gmail.com" },
     { label: "Make a Wish", address: "makeawish@caresupportfortheneedy.com" },
   ],
-  website: "www.caresupportfortheneedy.com",
+  website: "casnaggi.org",
   socials: [
     { label: "Facebook", href: "https://web.facebook.com/casnaggi" },
     { label: "Twitter", href: "https://twitter.com/casnaggi" },

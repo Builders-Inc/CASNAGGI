@@ -56,12 +56,12 @@ MongoDB is not exposed to the internet; only Caddy publishes ports.
 
 ### Verifying the Resend sending domain
 
-Resend will not send from an unverified domain. Until `caresupportfortheneedy.com` is verified it returns `403` and refuses every recipient except the Resend account owner's own address — messages still save, and the admin inbox flags each one as "Not emailed" with a retry button.
+Resend will not send from an unverified domain. Until `casnaggi.org` is verified it returns `403` and refuses every recipient except the Resend account owner's own address — messages still save, and the admin inbox flags each one as "Not emailed" with a retry button.
 
-1. At **resend.com/domains**, add `caresupportfortheneedy.com`.
+1. At **resend.com/domains**, add `casnaggi.org`.
 2. Add the DNS records Resend shows you (an MX and a `TXT` for SPF, plus a `TXT` for DKIM) at whoever hosts the domain's DNS.
 3. Wait for Resend to show **Verified** — usually minutes, occasionally a few hours.
-4. Nothing to redeploy: `RESEND_FROM` is already `website@caresupportfortheneedy.com`. Open a flagged message in the admin inbox and press **Try sending again** to confirm.
+4. Nothing to redeploy: `RESEND_FROM` is already `website@casnaggi.org`. Open a flagged message in the admin inbox and press **Try sending again** to confirm.
 
 Sending from your own verified domain is also what keeps notifications out of spam, so it's worth doing properly rather than leaving the sandbox sender in place.
 
