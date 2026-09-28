@@ -248,24 +248,24 @@ export const TRUSTEES = [
   },
   {
     name: "Dr. Chima Ikoro",
-    role: "Director",
+    role: "Chairman, Board of Directors",
     photo: MEDIA.team.chima,
     bio: "Consultant Gynaecologist at the Federal Medical Centre, Yenagoa, and Director of MetrixMed Clinics — combining clinical expertise with visionary leadership.",
     bioFull: [
       "Dr. Chima Ikoro is a seasoned Consultant Gynaecologist at the Federal Medical Centre, Yenagoa, Bayelsa State, and the Director of MetrixMed Clinics — a private facility renowned for comprehensive healthcare.",
       "Under his leadership, MetrixMed offers a wide range of services including medicine, obstetrics and gynaecology, paediatrics, family planning, surgery, general medical practice, laboratory diagnostics, and ultrasound scanning.",
-      "With a strong commitment to excellence and patient-centered care, Dr. Ikoro combines clinical expertise with visionary leadership, making MetrixMed a trusted hub for quality healthcare in Yenagoa. On the CASNAGGI board, he anchors the organization's Health on Wheels and Hope & Healing initiatives — personally leading maternal health outreaches in the field.",
+      "With a strong commitment to excellence and patient-centered care, Dr. Ikoro combines clinical expertise with visionary leadership, making MetrixMed a trusted hub for quality healthcare in Yenagoa. As Chairman of the CASNAGGI Board of Directors, he provides strategic oversight and chairs board deliberations, while anchoring the organization's Health on Wheels and Hope & Healing initiatives — personally leading maternal health outreaches in the field.",
     ],
   },
   {
     name: "Rev. Fr. Christian Mbara",
-    role: "Chairman & Director General",
+    role: "Director",
     photo: MEDIA.team.mbara,
     bio: "Catholic priest ordained in 2007, now serving in the Diocese of Charlottetown, Canada. A pastoral leader rooted in service, faith and compassion.",
     bioFull: [
       "Ordained in 2007, Rev. Fr. Christian Mbara is a dedicated priest of the Catholic Diocese of Okigwe, Nigeria, now serving in the Diocese of Charlottetown, Canada. A native of Nneato, Umunneochi, he studied philosophy and theology at Seat of Wisdom Major Seminary, Owerri, and earned a PGDE from Michael Okpara University, Umudike.",
       "Over the years, he has held key pastoral roles — including Parish Priest, Cathedral Administrator, Rector, and Dean — marked by his passion for prayer, preaching, charity, and compassionate care for the sick and needy.",
-      "As Chairman and Director General of CASNAGGI, he provides strategic oversight and chairs board deliberations. He embodies a ministry rooted in service, faith, and pastoral compassion — anchoring the organization's ethical compass and its commitment to the dignity of every human being it serves.",
+      "As a Director of CASNAGGI, he embodies a ministry rooted in service, faith, and pastoral compassion — anchoring the organization's ethical compass and its commitment to the dignity of every human being it serves.",
     ],
   },
   {
@@ -443,7 +443,7 @@ export const EVENTS = [
     story: [
       "Our flagship Health on Wheels programme made landfall in two states — Niger and Bayelsa — delivering free primary care to communities far from the nearest clinic.",
       "650 people received services ranging from malaria screening and anti-malarial treatment to antenatal checks, blood pressure monitoring and diabetes screening. Essential drugs were provided at no cost, with follow-up referrals for patients needing specialist care.",
-      "Dr. Chima Ikoro, CASNAGGI Director and Consultant Gynaecologist at Federal Medical Centre Yenagoa, led the maternal health station — a reminder that our board is not just strategic but hands-on.",
+      "Dr. Chima Ikoro, CASNAGGI Board Chairman and Consultant Gynaecologist at Federal Medical Centre Yenagoa, led the maternal health station — a reminder that our board is not just strategic but hands-on.",
     ],
     stats: [
       { value: "650", label: "Beneficiaries treated" },
@@ -552,7 +552,7 @@ export const EVENTS = [
     tags: ["Governance", "Strategic Plan"],
     story: [
       "Every national movement needs a serious first meeting. Ours happened one week after CAC registration, at the Bayelsa head office.",
-      "Founder/CEO Comrade Ifeoma Okorie Ikoro, Chairman Rev. Fr. Christian Mbara and the three Directors convened for two days of strategic planning. The board adopted the 2025–2035 Strategic Action Plan, approved the governance and financial management policies, and set the operational calendar for the first 12 months.",
+      "Founder/CEO Comrade Ifeoma Okorie Ikoro, Board Chairman Dr. Chima Ikoro and the Directors convened for two days of strategic planning. The board adopted the 2025–2035 Strategic Action Plan, approved the governance and financial management policies, and set the operational calendar for the first 12 months.",
       "Minutes, resolutions and the adopted strategic document are archived with the Corporate Affairs Commission and available to institutional partners on request.",
     ],
     stats: [

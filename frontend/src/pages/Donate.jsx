@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Copy, Mail, Phone, Landmark } from "lucide-react";
 import PageHeader from "../components/PageHeader";
@@ -13,7 +13,25 @@ const AMOUNTS = [
   { amount: "$500", outcome: "Micro-grant for a woman-led business" },
 ];
 
+const BANK = {
+  accountName: "Care Support for the Needy and Good Governance Initiative",
+  accountNumber: "2470110770",
+  bank: "Ecobank",
+};
+
 const Donate = () => {
+  const [copied, setCopied] = useState(false);
+
+  const copyAccountNumber = async () => {
+    try {
+      await navigator.clipboard.writeText(BANK.accountNumber);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard can be unavailable (insecure context); the number stays visible.
+    }
+  };
+
   return (
     <>
       <Seo
@@ -80,27 +98,30 @@ const Donate = () => {
                 </h3>
               </div>
               <dl className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-sm">
-                <div>
+                <div className="sm:col-span-2">
                   <dt className="text-brand-mute uppercase tracking-[0.2em] text-xs">
                     Account name
                   </dt>
                   <dd className="font-display text-lg mt-1">
-                    Care Support for the Needy Initiative
+                    {BANK.accountName}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-brand-mute uppercase tracking-[0.2em] text-xs">
+                    Account number
+                  </dt>
+                  <dd
+                    className="font-display text-lg mt-1 tracking-wider"
+                    data-testid="donate-account-number"
+                  >
+                    {BANK.accountNumber}
                   </dd>
                 </div>
                 <div>
                   <dt className="text-brand-mute uppercase tracking-[0.2em] text-xs">
                     Bank
                   </dt>
-                  <dd className="font-display text-lg mt-1">
-                    Available on request
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-brand-mute uppercase tracking-[0.2em] text-xs">
-                    Swift / Country
-                  </dt>
-                  <dd className="font-display text-lg mt-1">Nigeria</dd>
+                  <dd className="font-display text-lg mt-1">{BANK.bank}</dd>
                 </div>
                 <div>
                   <dt className="text-brand-mute uppercase tracking-[0.2em] text-xs">
@@ -111,9 +132,20 @@ const Donate = () => {
                   </dd>
                 </div>
               </dl>
+              <div className="mt-8">
+                <button
+                  type="button"
+                  onClick={copyAccountNumber}
+                  className="btn-primary"
+                  data-testid="donate-copy-account"
+                >
+                  <Copy className="h-4 w-4" />
+                  {copied ? "Copied" : "Copy account number"}
+                </button>
+              </div>
               <p className="mt-6 text-sm text-brand-mute">
-                Please email us for full wire instructions; we share them
-                securely on request.
+                Giving from outside Nigeria? Email us for international wire
+                (SWIFT) instructions.
               </p>
             </div>
 
