@@ -10,6 +10,7 @@ import {
   Tag,
 } from "lucide-react";
 import Reveal from "../components/Reveal";
+import EventGallery from "../components/EventGallery";
 import Seo from "../components/Seo";
 import ErrorState from "../components/ErrorState";
 import { EventDetailSkeleton } from "../components/EventSkeletons";
@@ -81,6 +82,8 @@ const EventDetail = () => {
 
   const { event, prev, next, related = [] } = data;
   const tags = event.tags || [];
+  const videos = event.videos || [];
+  const gallery = event.gallery || [];
 
   return (
     <>
@@ -190,6 +193,32 @@ const EventDetail = () => {
               </p>
             </Reveal>
 
+            {videos.map((v, i) => (
+              <figure key={v.src} className="mt-10" data-testid={`event-video-${i}`}>
+                {/* preload="metadata" fetches only enough to show the duration;
+                    the file itself streams in ranges once play is pressed. */}
+                <video
+                  controls
+                  playsInline
+                  preload="metadata"
+                  poster={v.poster || undefined}
+                  className="w-full aspect-video rounded-2xl bg-brand-ink"
+                >
+                  <source src={v.src} type="video/mp4" />
+                  Your browser can't play this video.{" "}
+                  <a href={v.src} className="underline">
+                    Download it
+                  </a>{" "}
+                  instead.
+                </video>
+                {v.title && (
+                  <figcaption className="mt-3 text-sm text-brand-mute">
+                    {v.title}
+                  </figcaption>
+                )}
+              </figure>
+            ))}
+
             <div className="mt-10 space-y-6">
               {(event.story || []).map((p, i) => (
                 <Reveal
@@ -217,6 +246,21 @@ const EventDetail = () => {
           </div>
         </div>
       </section>
+
+      {/* ---------- GALLERY ---------- */}
+      {gallery.length > 0 && (
+        <section className="pb-24 md:pb-32" data-testid="event-gallery-section">
+          <div className="container-x">
+            <div className="mb-10">
+              <p className="overline">From the day</p>
+              <h2 className="display-xl mt-4 text-3xl md:text-4xl">
+                Photo gallery.
+              </h2>
+            </div>
+            <EventGallery images={gallery} />
+          </div>
+        </section>
+      )}
 
       {/* ---------- PREV / NEXT STRIP ---------- */}
       {(prev || next) && (

@@ -3,6 +3,9 @@ services:
     build: ./backend
     restart: unless-stopped
     env_file: ./backend/.env
+    volumes:
+      # Event videos, copied onto the host out of band and served at /media.
+      - ./media:/app/media:ro
     depends_on:
       - mongo
 
