@@ -21,6 +21,23 @@ class Stat(ApiModel):
     label: str = Field(min_length=1, max_length=120)
 
 
+class GalleryImage(ApiModel):
+    src: str = Field(min_length=1, max_length=1000)
+    alt: str = Field(default="", max_length=300)
+
+
+class EventVideo(ApiModel):
+    """A video file served from the API host's /media directory (or any URL).
+
+    Played with the browser's own <video> element, so `src` must be a file the
+    browser can stream directly -- an MP4, not a YouTube page link.
+    """
+
+    src: str = Field(min_length=1, max_length=1000)
+    poster: str = Field(default="", max_length=1000)
+    title: str = Field(default="", max_length=200)
+
+
 class EventBase(ApiModel):
     title: str = Field(min_length=1, max_length=200)
     date: date_type
@@ -40,6 +57,8 @@ class EventBase(ApiModel):
     tags: list[str] = Field(default_factory=list, min_length=1, max_length=12)
     story: list[str] = Field(default_factory=list, max_length=20)
     stats: list[Stat] = Field(default_factory=list, max_length=6)
+    videos: list[EventVideo] = Field(default_factory=list, max_length=10)
+    gallery: list[GalleryImage] = Field(default_factory=list, max_length=60)
     published: bool = False
 
     @field_validator("tags")
@@ -81,6 +100,8 @@ class EventUpdate(ApiModel):
     tags: list[str] | None = Field(default=None, min_length=1, max_length=12)
     story: list[str] | None = Field(default=None, max_length=20)
     stats: list[Stat] | None = Field(default=None, max_length=6)
+    videos: list[EventVideo] | None = Field(default=None, max_length=10)
+    gallery: list[GalleryImage] | None = Field(default=None, max_length=60)
     published: bool | None = None
 
 

@@ -9,6 +9,7 @@ from starlette.middleware.cors import CORSMiddleware
 
 from . import db
 from .config import get_settings
+from .media import MediaFiles
 from .routers import (
     auth,
     events_admin,
@@ -85,3 +86,11 @@ for router in (
     uploads.router,
 ):
     app.include_router(router)
+
+# check_dir=False so the API still starts on a host where the media directory
+# has not been created yet; requests for files then simply 404.
+app.mount(
+    "/media",
+    MediaFiles(directory=_settings.media_dir, check_dir=False),
+    name="media",
+)

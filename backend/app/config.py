@@ -57,6 +57,8 @@ class Settings:
     cloudinary_api_secret: str
     cloudinary_folder: str
 
+    media_dir: str
+
     environment: str
 
     @property
@@ -124,5 +126,6 @@ def get_settings() -> Settings:
         cloudinary_api_key=os.environ.get("CLOUDINARY_API_KEY", ""),
         cloudinary_api_secret=os.environ.get("CLOUDINARY_API_SECRET", ""),
         cloudinary_folder=os.environ.get("CLOUDINARY_FOLDER", "casnaggi/events"),
+        media_dir=os.environ.get("MEDIA_DIR", "/app/media"),
         environment=os.environ.get("ENVIRONMENT", "production"),
     )

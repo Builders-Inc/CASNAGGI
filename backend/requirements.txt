@@ -1,4 +1,6 @@
 fastapi>=0.110.0
+# 0.39 added HTTP Range support to FileResponse, which video seeking needs.
+starlette>=0.39.0
 uvicorn[standard]>=0.27.0
 motor>=3.3.0
 pymongo>=4.6.0

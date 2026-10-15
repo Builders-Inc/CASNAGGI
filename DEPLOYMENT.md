@@ -72,13 +72,29 @@ git pull && docker compose up -d --build
 docker compose logs -f api
 ```
 
+### Event videos
+
+Videos are too large for git or the Netlify bundle, so they live in `media/` beside `docker-compose.yml` on the VPS. Compose mounts it read-only into the API, which serves it at `https://api.yourdomain.com/media/...` with byte-range support so visitors can seek. `media/` is gitignored; copy files in directly:
+
+```bash
+scp -r media/events/<folder> <vps>:~/casnaggi/media/events/
+```
+
+Re-encode before uploading so the file starts playing straight away:
+
+```bash
+ffmpeg -i in.mp4 -c:v libx264 -preset slow -crf 25 -c:a aac -b:a 96k -movflags +faststart out.mp4
+```
+
+Then add the address to the event under **Videos and photos** in the admin portal. Gallery photos are ordinary image addresses, either in `frontend/public/images/` or uploaded to Cloudinary.
+
 ### Backups
 
 ```bash
 docker compose exec mongo mongodump --archive --db casnaggi > casnaggi-$(date +%F).archive
 ```
 
-Events and contact messages live only in MongoDB, so this is the whole backup. Images live in Cloudinary or in the repo.
+Events and contact messages live only in MongoDB, so this is the whole backup. Images live in Cloudinary or in the repo; videos live only in `media/` on the VPS, so back that folder up too.
 
 ## 2. Frontend on Netlify
 

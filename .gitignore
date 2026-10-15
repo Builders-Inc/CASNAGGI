@@ -92,3 +92,8 @@ credentials.json
 # Secrets
 .env
 !.env.example
+
+# Event videos live on the API host, not in git (see DEPLOYMENT.md)
+/media/
+# Raw source material dropped in for processing
+/content/

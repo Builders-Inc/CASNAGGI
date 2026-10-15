@@ -7,6 +7,8 @@ from .event import (
     EventListResponse,
     EventOut,
     EventUpdate,
+    EventVideo,
+    GalleryImage,
     Stat,
     UpcomingResponse,
 )
@@ -26,6 +28,8 @@ __all__ = [
     "EventListResponse",
     "EventOut",
     "EventUpdate",
+    "EventVideo",
+    "GalleryImage",
     "LoginRequest",
     "MessageCreate",
     "MessageCreateResponse",

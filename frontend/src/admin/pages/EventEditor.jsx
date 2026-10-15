@@ -46,8 +46,13 @@ const EMPTY = {
   tags: [],
   story: [""],
   stats: [{ value: "", label: "" }],
+  videos: [],
+  gallery: [],
   published: false,
 };
+
+const rowInput =
+  "w-full px-3 py-2 rounded-lg border border-brand-rule text-sm focus:outline-none focus:border-brand-terracotta";
 
 const input =
   "mt-2 w-full px-4 py-3 rounded-xl border bg-white text-sm focus:outline-none transition";
@@ -92,6 +97,8 @@ const EventEditor = () => {
         ...existing,
         story: existing.story?.length ? existing.story : [""],
         stats: existing.stats?.length ? existing.stats : [{ value: "", label: "" }],
+        videos: existing.videos ?? [],
+        gallery: existing.gallery ?? [],
       });
       setDirty(false);
     }
@@ -153,6 +160,12 @@ const EventEditor = () => {
         tags: form.tags.map((t) => t.trim()).filter(Boolean),
         story: form.story.map((p) => p.trim()).filter(Boolean),
         stats: form.stats.filter((s) => s.value.trim() && s.label.trim()),
+        videos: form.videos
+          .filter((v) => v.src.trim())
+          .map((v) => ({ ...v, src: v.src.trim(), poster: v.poster.trim() })),
+        gallery: form.gallery
+          .filter((g) => g.src.trim())
+          .map((g) => ({ ...g, src: g.src.trim() })),
       };
       if (!isEdit) delete payload.id;
 
@@ -349,6 +362,87 @@ const EventEditor = () => {
             publicId={form.imagePublicId}
             error={errors.image}
             onChange={(patch) => set(patch)}
+          />
+        </section>
+
+        {/* Videos + gallery */}
+        <section className="rounded-2xl border border-brand-rule bg-white p-6 md:p-8 space-y-8">
+          <h2 className="font-display text-xl font-medium">Videos and photos</h2>
+
+          <RepeatableList
+            label="Videos"
+            hint="The address of an MP4 file on the server, e.g. https://api.casnaggi.org/media/events/<folder>/<file>.mp4. The cover image is shown before the video plays."
+            items={form.videos}
+            onChange={(videos) => set({ videos })}
+            emptyItem={{ src: "", poster: "", title: "" }}
+            addLabel="Add a video"
+            max={10}
+            testId="event-videos"
+            renderRow={(value, onRowChange) => (
+              <div className="space-y-2">
+                <input
+                  type="url"
+                  value={value.src}
+                  placeholder="Video file address (.mp4)"
+                  onChange={(e) => onRowChange({ ...value, src: e.target.value })}
+                  className={rowInput}
+                />
+                <input
+                  type="text"
+                  value={value.poster}
+                  placeholder="Cover image address (optional)"
+                  onChange={(e) => onRowChange({ ...value, poster: e.target.value })}
+                  className={rowInput}
+                />
+                <input
+                  type="text"
+                  value={value.title}
+                  placeholder="Caption (optional)"
+                  onChange={(e) => onRowChange({ ...value, title: e.target.value })}
+                  className={rowInput}
+                />
+              </div>
+            )}
+          />
+
+          <RepeatableList
+            label="Photo gallery"
+            hint="Shown as a grid below the story; visitors can open each photo full screen. The description is read aloud by screen readers and shown as the caption."
+            items={form.gallery}
+            onChange={(gallery) => set({ gallery })}
+            emptyItem={{ src: "", alt: "" }}
+            addLabel="Add a photo"
+            max={60}
+            testId="event-gallery"
+            renderRow={(value, onRowChange) => (
+              <div className="flex gap-3">
+                {value.src.trim() ? (
+                  <img
+                    src={value.src}
+                    alt=""
+                    className="h-16 w-16 flex-shrink-0 rounded-lg object-cover bg-brand-sand"
+                  />
+                ) : (
+                  <div className="h-16 w-16 flex-shrink-0 rounded-lg bg-brand-sand" />
+                )}
+                <div className="flex-1 min-w-0 space-y-2">
+                  <input
+                    type="text"
+                    value={value.src}
+                    placeholder="Photo address"
+                    onChange={(e) => onRowChange({ ...value, src: e.target.value })}
+                    className={rowInput}
+                  />
+                  <input
+                    type="text"
+                    value={value.alt}
+                    placeholder="Short description"
+                    onChange={(e) => onRowChange({ ...value, alt: e.target.value })}
+                    className={rowInput}
+                  />
+                </div>
+              </div>
+            )}
           />
         </section>
 
